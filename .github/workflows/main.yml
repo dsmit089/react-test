@@ -14,6 +14,10 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Log Repository Info
+      run: |
+        echo "Repository Name: ${{ secrets.HOST }}"
+
     # Step 2: Transfer HTML files to the server
     - name: Upload HTML Files
       uses: appleboy/scp-action@v0.1.7
