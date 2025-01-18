@@ -2,9 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-const Home = () => <h1>Home Page</h1>;
-const About = () => <h1>About Page</h1>;
-const Contact = () => <h1>Contact Page</h1>;
+const Home = () => <h1>Home Page update</h1>;
+const About = () => <h1>About Page update</h1>;
+const Contact = () => <h1>Contact Page update</h1>;
 
 function App() {
   return (
