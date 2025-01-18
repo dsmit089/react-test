@@ -1,0 +1,25 @@
+name: Deploy HTML Files to Server
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the `main` branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Transfer HTML files to the server
+    - name: Upload HTML Files
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        source: "./*"
+        target: "/var/www/html/test-server"
