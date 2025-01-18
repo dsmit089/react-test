@@ -1,4 +1,4 @@
-name: Deploy HTML Files to Server
+name: CI/CD for React App
 
 on:
   push:
@@ -6,8 +6,40 @@ on:
       - main  # Trigger on pushes to the `main` branch
 
 jobs:
+  build:
+    runs-on: ubuntu-latest  # Runs the job on an Ubuntu runner
+
+    steps:
+      # Step 1: Check out the code from the repo
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js (for React build)
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  # Specify Node.js version
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+
+      # Step 4: Run build command (Builds your React app)
+      - name: Build React app
+        run: |
+          npm run build
+
+      # Step 5: Upload built files as artifacts (optional)
+      - name: Upload build as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: react-app-build
+          path: ./build
+          
   deploy:
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
     # Step 1: Checkout the code
@@ -19,11 +51,11 @@ jobs:
         echo "Repository Name: ${{ secrets.HOST }}"
 
     # Step 2: Transfer HTML files to the server
-    - name: Upload HTML Files
+    - name: Upload React Build Files
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
-        source: "./*"
+        source: "./build/*"
         target: "/var/www/html/test-server"
